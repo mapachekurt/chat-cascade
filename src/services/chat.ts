@@ -1,6 +1,8 @@
 const WEBHOOK_URL = "https://webhook-processor-production-a94c.up.railway.app/webhook/53c136fe-3e77-4709-a143-fe82746dd8b6/chat";
 
 export const sendMessage = async (message: string) => {
+  console.log('Sending message to webhook:', message);
+  
   const response = await fetch(WEBHOOK_URL, {
     method: "POST",
     headers: {
@@ -10,8 +12,11 @@ export const sendMessage = async (message: string) => {
   });
 
   if (!response.ok) {
-    throw new Error("Failed to send message");
+    console.error('Webhook response not OK:', response.status, response.statusText);
+    throw new Error(`Failed to send message: ${response.statusText}`);
   }
 
-  return response.json();
+  const data = await response.json();
+  console.log('Received response from webhook:', data);
+  return data;
 };
