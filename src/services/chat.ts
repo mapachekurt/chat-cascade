@@ -9,9 +9,9 @@ export const sendMessage = async (message: string) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      message,
-      timestamp: new Date().toISOString(),
-      type: "user_message"
+      sessionId: crypto.randomUUID().replace(/-/g, ''),
+      action: "sendMessage",
+      chatInput: message
     }),
   });
 
