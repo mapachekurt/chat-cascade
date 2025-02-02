@@ -20,9 +20,9 @@ const Index = () => {
       // Get response from webhook
       const response = await sendMessage(text);
       
-      // Add assistant message
+      // Add assistant message using the output field from the response
       const assistantMessage: Message = {
-        text: response.message || "Sorry, I couldn't process that.",
+        text: response.output || "Sorry, I couldn't process that.",
         sender: "assistant",
       };
       setMessages((prev) => [...prev, assistantMessage]);
