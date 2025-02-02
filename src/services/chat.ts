@@ -8,11 +8,17 @@ export const sendMessage = async (message: string) => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ message }),
+    body: JSON.stringify({
+      message,
+      timestamp: new Date().toISOString(),
+      type: "user_message"
+    }),
   });
 
   if (!response.ok) {
     console.error('Webhook response not OK:', response.status, response.statusText);
+    const errorData = await response.text();
+    console.error('Error response:', errorData);
     throw new Error(`Failed to send message: ${response.statusText}`);
   }
 
