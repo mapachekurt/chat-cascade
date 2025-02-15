@@ -36,7 +36,7 @@ const Index = () => {
           ? "Click here to enable CORS proxy access"
           : errorMessage,
         action: errorMessage.includes('corsdemo') ? {
-          children: "Enable CORS Access",
+          altText: "Enable CORS Access",
           onClick: () => window.open('https://cors-anywhere.herokuapp.com/corsdemo', '_blank')
         } : undefined,
         variant: "destructive"
@@ -57,11 +57,14 @@ const Index = () => {
       {/* Sidebar */}
       <div
         className={cn(
-          "h-full border-r bg-sidebar-background transition-all duration-300",
+          "relative h-full border-r bg-sidebar-background transition-all duration-300 overflow-hidden",
           isSidebarOpen ? "w-64" : "w-0"
         )}
       >
-        <div className="flex h-full flex-col">
+        <div className={cn(
+          "flex h-full flex-col",
+          "min-w-64" // This ensures content maintains width while container collapses
+        )}>
           <div className="border-b p-4">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold">Chatbox</h2>
