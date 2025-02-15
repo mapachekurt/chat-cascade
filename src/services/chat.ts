@@ -1,12 +1,15 @@
+
 const WEBHOOK_URL = "https://webhook-processor-production-a94c.up.railway.app/webhook/53c136fe-3e77-4709-a143-fe82746dd8b6/chat";
+const CORS_PROXY = "https://cors-anywhere.herokuapp.com/";
 
 export const sendMessage = async (message: string) => {
   console.log('Sending message to webhook:', message);
   
-  const response = await fetch(WEBHOOK_URL, {
+  const response = await fetch(CORS_PROXY + WEBHOOK_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "Origin": window.location.origin,
     },
     body: JSON.stringify({
       sessionId: crypto.randomUUID().replace(/-/g, ''),
