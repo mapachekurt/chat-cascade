@@ -5,23 +5,9 @@ import { ChatInput } from "@/components/ChatInput";
 import { Message } from "@/types/chat";
 import { sendMessage } from "@/services/chat";
 import { useToast } from "@/components/ui/use-toast";
-import { ChevronLeft, ChevronRight, Star, Plus, MessageSquare } from "lucide-react";
+import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-
-const CHAT_ITEMS = [
-  { id: 1, title: "Just chat", starred: true },
-  { id: 2, title: "Markdown 101 (Example)", starred: true },
-  { id: 3, title: "Software Developer (Example)", starred: true },
-  { id: 4, title: "CORS-Webhook", starred: false },
-  { id: 5, title: "OnboardFlow", starred: false },
-  { id: 6, title: "Untitled", starred: false },
-  { id: 7, title: "Github Copilot Chat", starred: false },
-  { id: 8, title: "Fullstack Software Developer", starred: false },
-  { id: 9, title: "Translator (Example)", starred: false },
-  { id: 10, title: "Social Media Influencer (Example)", starred: false },
-  { id: 11, title: "Travel Guide (Example)", starred: false },
-];
 
 const Index = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -44,15 +30,13 @@ const Index = () => {
       setMessages((prev) => [...prev, assistantMessage]);
     } catch (error: any) {
       const errorMessage = error.message || "Failed to send message. Please try again.";
-      const description = errorMessage.includes('corsdemo') 
-        ? "Click here to enable CORS proxy access"
-        : errorMessage;
-      
       toast({
         title: "Error",
-        description,
+        description: errorMessage.includes('corsdemo') 
+          ? "Click here to enable CORS proxy access"
+          : errorMessage,
         action: errorMessage.includes('corsdemo') ? {
-          altText: "Enable CORS Access",
+          children: "Enable CORS Access",
           onClick: () => window.open('https://cors-anywhere.herokuapp.com/corsdemo', '_blank')
         } : undefined,
         variant: "destructive"
@@ -61,6 +45,11 @@ const Index = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleNewChat = () => {
+    setMessages([]);
+    toast({ description: "New chat created" });
   };
 
   return (
@@ -74,25 +63,28 @@ const Index = () => {
       >
         <div className="flex h-full flex-col">
           <div className="border-b p-4">
-            <h2 className="text-lg font-semibold">Chatbox</h2>
-          </div>
-          <div className="flex-1 overflow-auto p-3">
-            {CHAT_ITEMS.map((item) => (
-              <div
-                key={item.id}
-                className="mb-1 flex items-center rounded-lg px-3 py-2 hover:bg-sidebar-accent cursor-pointer"
+            <div className="flex items-center justify-between">
+              <h2 className="text-lg font-semibold">Chatbox</h2>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
               >
-                <MessageSquare className="mr-2 h-4 w-4" />
-                <span className="flex-1 truncate">{item.title}</span>
-                {item.starred && <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />}
-              </div>
-            ))}
+                {isSidebarOpen ? (
+                  <ChevronLeft className="h-4 w-4" />
+                ) : (
+                  <ChevronRight className="h-4 w-4" />
+                )}
+              </Button>
+            </div>
           </div>
+          <div className="flex-1"></div>
           <div className="border-t p-3">
             <Button
               variant="outline"
               className="w-full justify-start"
-              onClick={() => toast({ description: "New chat created" })}
+              onClick={handleNewChat}
             >
               <Plus className="mr-2 h-4 w-4" />
               New Chat
@@ -100,20 +92,6 @@ const Index = () => {
           </div>
         </div>
       </div>
-
-      {/* Toggle Button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="absolute left-0 top-1/2 -translate-y-1/2 rounded-none border bg-background p-0.5"
-        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-      >
-        {isSidebarOpen ? (
-          <ChevronLeft className="h-4 w-4" />
-        ) : (
-          <ChevronRight className="h-4 w-4" />
-        )}
-      </Button>
 
       {/* Main Content */}
       <div className="flex flex-1 flex-col">
