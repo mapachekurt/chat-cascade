@@ -36,7 +36,7 @@ const Index = () => {
           ? "Click here to enable CORS proxy access"
           : errorMessage,
         action: errorMessage.includes('corsdemo') ? {
-          children: "Enable CORS Access",
+          label: "Enable CORS Access",
           onClick: () => window.open('https://cors-anywhere.herokuapp.com/corsdemo', '_blank')
         } : undefined,
         variant: "destructive"
@@ -57,42 +57,53 @@ const Index = () => {
       {/* Sidebar */}
       <div
         className={cn(
-          "relative h-full border-r bg-sidebar-background transition-all duration-300",
-          isSidebarOpen ? "w-64" : "w-0"
+          "relative h-full border-r bg-sidebar-background transition-all duration-300 flex flex-col",
+          isSidebarOpen ? "w-64" : "w-12"
         )}
       >
-        <div className={cn(
-          "flex h-full flex-col",
-          "w-64" // Fixed width to prevent content shrinking
-        )}>
-          <div className="border-b p-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Chatbox</h2>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8 z-50"
-                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              >
-                {isSidebarOpen ? (
-                  <ChevronLeft className="h-4 w-4" />
-                ) : (
-                  <ChevronRight className="h-4 w-4" />
-                )}
-              </Button>
-            </div>
-          </div>
-          <div className="flex-1"></div>
-          <div className="border-t p-3">
-            <Button
-              variant="outline"
-              className="w-full justify-start"
-              onClick={handleNewChat}
-            >
-              <Plus className="mr-2 h-4 w-4" />
+        {/* Header with collapse button */}
+        <div className="border-b p-4 flex items-center">
+          <h2 className={cn("text-lg font-semibold transition-opacity duration-300",
+            isSidebarOpen ? "opacity-100" : "opacity-0 w-0 overflow-hidden"
+          )}>
+            Chatbox
+          </h2>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8 ml-auto"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            {isSidebarOpen ? (
+              <ChevronLeft className="h-4 w-4" />
+            ) : (
+              <ChevronRight className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
+
+        <div className="flex-1"></div>
+
+        {/* Footer with New Chat button */}
+        <div className="border-t p-3">
+          <Button
+            variant="outline"
+            className={cn(
+              "transition-all duration-300",
+              isSidebarOpen
+                ? "w-full justify-start"
+                : "w-8 h-8 p-0"
+            )}
+            onClick={handleNewChat}
+          >
+            <Plus className="h-4 w-4" />
+            <span className={cn(
+              "ml-2 transition-opacity duration-300",
+              isSidebarOpen ? "opacity-100" : "opacity-0 w-0 overflow-hidden"
+            )}>
               New Chat
-            </Button>
-          </div>
+            </span>
+          </Button>
         </div>
       </div>
 
