@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { ChatContainer } from "@/components/ChatContainer";
 import { ChatInput } from "@/components/ChatInput";
@@ -26,11 +27,20 @@ const Index = () => {
         sender: "assistant",
       };
       setMessages((prev) => [...prev, assistantMessage]);
-    } catch (error) {
+    } catch (error: any) {
+      const errorMessage = error.message || "Failed to send message. Please try again.";
+      const description = errorMessage.includes('corsdemo') 
+        ? "Click here to enable CORS proxy access"
+        : errorMessage;
+      
       toast({
         title: "Error",
-        description: "Failed to send message. Please try again.",
+        description,
         variant: "destructive",
+        action: errorMessage.includes('corsdemo') ? {
+          label: "Enable Access",
+          onClick: () => window.open('https://cors-anywhere.herokuapp.com/corsdemo', '_blank')
+        } : undefined
       });
       console.error("Error sending message:", error);
     } finally {
