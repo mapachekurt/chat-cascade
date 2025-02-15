@@ -22,6 +22,9 @@ export const sendMessage = async (message: string) => {
     console.error('Webhook response not OK:', response.status, response.statusText);
     const errorData = await response.text();
     console.error('Error response:', errorData);
+    if (response.status === 403 && errorData.includes('/corsdemo')) {
+      throw new Error('Please enable CORS proxy by visiting https://cors-anywhere.herokuapp.com/corsdemo first');
+    }
     throw new Error(`Failed to send message: ${response.statusText}`);
   }
 
