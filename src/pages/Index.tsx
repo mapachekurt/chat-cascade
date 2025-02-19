@@ -36,10 +36,10 @@ const Index = () => {
         description: errorMessage.includes('corsdemo') 
           ? "Click here to enable CORS proxy access"
           : errorMessage,
-        action: {
-          altText: "Enable CORS Access",
+        action: errorMessage.includes('corsdemo') ? {
+          children: "Enable CORS Access",
           onClick: () => window.open('https://cors-anywhere.herokuapp.com/corsdemo', '_blank')
-        }
+        } : undefined
       });
       console.error("Error sending message:", error);
     } finally {
