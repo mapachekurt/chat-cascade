@@ -37,7 +37,7 @@ const Index = () => {
           ? "Click here to enable CORS proxy access"
           : errorMessage,
         action: errorMessage.includes('corsdemo') ? {
-          children: "Enable CORS Access",
+          label: "Enable CORS Access",
           onClick: () => window.open('https://cors-anywhere.herokuapp.com/corsdemo', '_blank')
         } : undefined
       });
@@ -54,6 +54,11 @@ const Index = () => {
 
   return (
     <div className="flex h-screen bg-background">
+      {/* Top Navigation */}
+      <div className="fixed top-0 right-0 p-4 z-50">
+        <AuthDialog />
+      </div>
+
       {/* Sidebar */}
       <div
         className={cn(
@@ -68,21 +73,18 @@ const Index = () => {
           )}>
             Chatbox
           </h2>
-          <div className="flex items-center gap-2">
-            <AuthDialog />
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            >
-              {isSidebarOpen ? (
-                <ChevronLeft className="h-4 w-4" />
-              ) : (
-                <ChevronRight className="h-4 w-4" />
-              )}
-            </Button>
-          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-8 w-8"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            {isSidebarOpen ? (
+              <ChevronLeft className="h-4 w-4" />
+            ) : (
+              <ChevronRight className="h-4 w-4" />
+            )}
+          </Button>
         </div>
 
         <div className="flex-1"></div>
