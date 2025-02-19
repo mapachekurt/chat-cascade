@@ -8,6 +8,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { ChevronLeft, ChevronRight, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { AuthDialog } from "@/components/AuthDialog";
 
 const Index = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -35,11 +36,10 @@ const Index = () => {
         description: errorMessage.includes('corsdemo') 
           ? "Click here to enable CORS proxy access"
           : errorMessage,
-        action: errorMessage.includes('corsdemo') ? {
-          children: "Enable CORS Access",
+        action: {
+          altText: "Enable CORS Access",
           onClick: () => window.open('https://cors-anywhere.herokuapp.com/corsdemo', '_blank')
-        } : undefined,
-        variant: "destructive"
+        }
       });
       console.error("Error sending message:", error);
     } finally {
@@ -62,24 +62,27 @@ const Index = () => {
         )}
       >
         {/* Header with collapse button */}
-        <div className="border-b p-4 flex items-center">
+        <div className="border-b p-4 flex items-center justify-between">
           <h2 className={cn("text-lg font-semibold transition-opacity duration-300",
             isSidebarOpen ? "opacity-100" : "opacity-0 w-0 overflow-hidden"
           )}>
             Chatbox
           </h2>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 ml-auto"
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-          >
-            {isSidebarOpen ? (
-              <ChevronLeft className="h-4 w-4" />
-            ) : (
-              <ChevronRight className="h-4 w-4" />
-            )}
-          </Button>
+          <div className="flex items-center gap-2">
+            <AuthDialog />
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            >
+              {isSidebarOpen ? (
+                <ChevronLeft className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
         </div>
 
         <div className="flex-1"></div>
