@@ -84,7 +84,7 @@ export function AuthDialog() {
   if (user) {
     return (
       <Button variant="outline" onClick={handleSignOut}>
-        Logged In
+        Log Out
       </Button>
     );
   }
