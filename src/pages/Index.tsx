@@ -36,7 +36,7 @@ const Index = () => {
           ? "Click here to enable CORS proxy access"
           : errorMessage,
         action: errorMessage.includes('corsdemo') ? {
-          label: "Enable CORS Access",
+          children: "Enable CORS Access",
           onClick: () => window.open('https://cors-anywhere.herokuapp.com/corsdemo', '_blank')
         } : undefined,
         variant: "destructive"
